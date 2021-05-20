@@ -62,8 +62,26 @@ class ProductProvider extends Component {
                   id : "", name : "", price : "", quantity : "", category : ""
               })
 
+          } else {
+              const MaxId = Math.max(...this.state.data.map(item=>item.id));
+              const id = MaxId + 1;
+              const newItem = [];
+              newItem['name'] = this.state.updateEdit[1];
+              newItem['price'] = this.state.updateEdit[2];
+              newItem['quantity'] = this.state.updateEdit[3];
+              newItem['category'] = this.state.updateEdit[4];
+              this.setState({
+                data: [...this.state.data,newItem],
+                id : "", name : "", price : "", quantity : "", category : ""
+            })
           }
 
+      }
+      onDelete= (id) => {
+            const tempItem = this.state.data.filter(item=> item.id !== id);
+            this.setState({
+                data: tempItem
+            })
       }
     render() { 
         return ( 
@@ -72,7 +90,9 @@ class ProductProvider extends Component {
                 value = {{...this.state, 
                 onEdit: this.onEdit,
                 onSave: this.onSave,
-                updateValue: this.updateValue}}
+                updateValue: this.updateValue,
+                onDelete : this.onDelete 
+            }}
                 >
                     {this.props.children}
                 </ProductContext.Provider>
